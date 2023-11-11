@@ -45,3 +45,30 @@ http://localhost:8100/currency-conversion/from/EUR/to/INR/quantity/10
 - You don't want to HARDCODE
 - Configure an Environment Variable - `CURRENCY_EXCHANGE_SERVICE_HOST`
 - --env CURRENCY_EXCHANGE_SERVICE_HOST=http://currency-exchange
+
+# 1st way of Connecting 2 Services on Docker - Link/Bridge
+<!-- ----------------------------------------------------------- -->
+# Start Run Initial Service
+- docker run -p 5001:8000 --name=currency-exchange harishavenue1/currency-exchange:0.0.1.RELEASE
+
+
+# Finally run the main service which calls the 1st Service using link/bridge Functionality of Docker
+- docker run -d -p 5002:8100 --env CURRENCY_EXCHANGE_SERVICE_HOST=http://currency-exchange --name=currency-conversion --link currency-exchange harishavenue1/currency-conversion:0.0.1.RELEASE
+
+# 2nd way of Connecting 2 Services on Docker - network
+<!-- ----------------------------------------------------------- -->
+
+# Create Network
+- docker network create currency-network
+
+# Start Run Initial Service with Network created
+- docker run -p 5001:8000 --name=currency-exchange --network=currency-network harishavenue1/currency-exchange:0.0.1.RELEASE
+
+
+# Finally run the main service which calls the 1st Service using NETWORK Functionality of Docker
+- docker run -d -p 5002:8100 --env CURRENCY_EXCHANGE_SERVICE_HOST=http://currency-exchange --name=currency-conversion --network=currency-network harishavenue1/currency-conversion:0.0.1.RELEASE
+
+# 3nd way of Connecting 2 Services on Docker - Docker Compose File
+<!-- ----------------------------------------------------------- -->
+# useful in running multiple containers with single command
+- docker-compose up -d
