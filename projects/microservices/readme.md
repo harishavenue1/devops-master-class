@@ -58,17 +58,17 @@ http://localhost:8100/currency-conversion/from/EUR/to/INR/quantity/10
 ### 2nd way of Connecting 2 Services on Docker - network
 <!-- ----------------------------------------------------------- -->
 
-# Create Network
+#### Create Network
 - docker network create currency-network
 
-# Start Run Initial Service with Network created
+#### Start Run Initial Service with Network created
 - docker run -p 5001:8000 --name=currency-exchange --network=currency-network harishavenue1/currency-exchange:0.0.1.RELEASE
 
 
-# Finally run the main service which calls the 1st Service using NETWORK Functionality of Docker
+#### Finally run the main service which calls the 1st Service using NETWORK Functionality of Docker
 - docker run -d -p 5002:8100 --env CURRENCY_EXCHANGE_SERVICE_HOST=http://currency-exchange --name=currency-conversion --network=currency-network harishavenue1/currency-conversion:0.0.1.RELEASE
 
 ### 3nd way of Connecting 2 Services on Docker - Docker Compose File
 <!-- ----------------------------------------------------------- -->
-# useful in running multiple containers with single command
+#### useful in running multiple containers with single command
 - docker-compose up -d
